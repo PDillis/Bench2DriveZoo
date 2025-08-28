@@ -2,44 +2,32 @@
 - **STEP 1: Create environment**
     ```
     ## python3.8 should be strictly followed.
-    conda create -n b2d_zoo python=3.8
+    conda create -n b2d_zoo python=3.9
     conda activate b2d_zoo
     ```
 - **STEP 2: Install cudatoolkit**
     ```
-    conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+    conda install -c "nvidia/label/cuda-12.9.0" cuda-toolkit
     ```
 - **STEP 3: Install torch**
     ```
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+    pip install uv
+    uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu129
     ```
 - **STEP 4: Set environment variables**
     ```
-    # cuda 11.8 and GCC 9.4 is strongly recommended. Otherwise, it might encounter errors.
-    export PATH=YOUR_GCC_PATH/bin:$PATH
-    export CUDA_HOME=YOUR_CUDA_PATH/
+    export PATH=/usr/bin/gcc:$PATH
+    export CUDA_HOME=usr/local/cuda-12.9/
     ```
 - **STEP 5: Install ninja and packaging**
     ```
-    pip install ninja packaging
+    uv pip install ninja packaging
     ```
 - **STEP 6: Install our repo**
     ```
-    pip install -v -e .
+    uv pip install -r requirements.txt
     ```
-
-- **STEP 7: Prepare pretrained weights.**
-    create directory `ckpts`
-
-    ```
-    mkdir ckpts 
-    ```
-    Download `resnet50-19c8e357.pth` form [Hugging Face](https://huggingface.co/rethinklab/Bench2DriveZoo/blob/main/resnet50-19c8e357.pth) or [Baidu Cloud](https://pan.baidu.com/s/1LlSrbYvghnv3lOlX1uLU5g?pwd=1234 ) or from Pytorch official website.
-  
-    Download `r101_dcn_fcos3d_pretrain.pth` form [Hugging Face](https://huggingface.co/rethinklab/Bench2DriveZoo/blob/main/r101_dcn_fcos3d_pretrain.pth) or [Baidu Cloud](https://pan.baidu.com/s/1o7owaQ5G66xqq2S0TldwXQ?pwd=1234) or from BEVFormer official repo.
-
-
-- **STEP 8: Install CARLA for closed-loop evaluation.**
+- **STEP 7: Install CARLA for closed-loop evaluation.**
 
     ```
     ## Ignore the line about downloading and extracting CARLA if you have already done so.
@@ -52,6 +40,5 @@
     export CARLA_ROOT=YOUR_CARLA_PATH
 
     ## Important!!! Otherwise, the python environment can not find carla package
-    echo "$CARLA_ROOT/PythonAPI/carla/dist/carla-0.9.15-py3.7-linux-x86_64.egg" >> YOUR_CONDA_PATH/envs/YOUR_CONDA_ENV_NAME/lib/python3.8/site-packages/carla.pth # python 3.8 also works well, please set YOUR_CONDA_PATH and YOUR_CONDA_ENV_NAME
-
+    uv pip install carla==0.9.15
     ```
